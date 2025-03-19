@@ -84,7 +84,7 @@ public class Users: IdentityUser<Guid>
     /// Thời gian tạo
     /// </summary>
     [Required]
-    public required DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
     
     /// <summary>
     /// Người cập nhật gần nhất
