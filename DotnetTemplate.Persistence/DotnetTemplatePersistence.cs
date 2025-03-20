@@ -1,5 +1,5 @@
 ﻿namespace DotnetTemplate.Persistence;
 
-public class Class1
+public class DotnetTemplatePersistence
 {
 }

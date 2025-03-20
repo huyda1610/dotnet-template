@@ -12,6 +12,9 @@ public class Permissions
     /// </summary>
     public Guid RoleId { get; set; }
     
+    // Navigation property
+    // public Roles Roles { get; set; }
+    
     /// <summary>
     /// Khóa ngoại liên kết đến bảng Functions
     /// </summary>
