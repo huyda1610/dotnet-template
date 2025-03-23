@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Dotnet.Domain.Entities;
 
-public class UserClaims:IdentityUserClaim<Guid>
+public class UserClaimsEntity:IdentityUserClaim<Guid>
 {
     
 }
