@@ -2,13 +2,8 @@ using Dotnet.Domain.Abstraction;
 
 namespace Dotnet.Domain.Entities;
 
-public class ActionsEntity:FullAuditableEntity
+public class ActionsEntity:FullAuditableEntity<Guid>
 {
-    /// <summary>
-    /// Khóa chính của đối tượng
-    /// </summary>
-    public Guid Id { get; set; }
-    
     /// <summary>
     /// Mã của hành động
     /// </summary>
