@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotnetTemplate.Persistence;
 
-public class ApplicationDbContext: DbContext, IApplicationDbContext
+public class ApplicationDbContext: DbContext
 {
     DbSet<UsersEntity> Users { get; set; }
     DbSet<RolesEntity> Roles { get; set; }
