@@ -1,5 +1,4 @@
 using Dotnet.Domain.Entities;
-using DotnetTemplate.Persistence.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotnetTemplate.Persistence;
@@ -28,6 +27,8 @@ public class ApplicationDbContext: DbContext
         AuditableConfiguration(builder);
         
         
+        //Thêm Query Filter tự động lọc dữ liệu xoá mềm
+        ApplyGlobalQueryFilters(builder);
     }
     
     private static void AuditableConfiguration(ModelBuilder modelBuilder)
@@ -43,10 +44,10 @@ public class ApplicationDbContext: DbContext
             var builder = modelBuilder.Entity(entityType);
 
             // Kiểm tra nếu entity thiếu thuộc tính bắt buộc thì throw exception
-            ValidationHelpers.EnsurePropertyExists(entityType, nameof(IAuditable.CreatedAt));
-            ValidationHelpers.EnsurePropertyExists(entityType, nameof(IAuditable.CreatedBy));
-            ValidationHelpers.EnsurePropertyExists(entityType, nameof(IAuditable.IsDeleted));
-            ValidationHelpers.EnsurePropertyExists(entityType, nameof(IAuditable.OrderId));
+            EnsurePropertyExists(entityType, nameof(IAuditable.CreatedAt));
+            EnsurePropertyExists(entityType, nameof(IAuditable.CreatedBy));
+            EnsurePropertyExists(entityType, nameof(IAuditable.IsDeleted));
+            EnsurePropertyExists(entityType, nameof(IAuditable.OrderId));
 
             // Áp dụng cấu hình cho thuộc tính audit chung
             builder.Property(nameof(IAuditable.CreatedAt))
@@ -79,5 +80,38 @@ public class ApplicationDbContext: DbContext
             }
         }
     }
+    
+    private static void EnsurePropertyExists(Type entityType, string propertyName)
+    {
+        if (string.IsNullOrWhiteSpace(propertyName))
+        {
+            throw new ArgumentException(nameof(propertyName), "Property name cannot be null or empty.");
+        }
+        
+        
+        if ( entityType.GetProperty(propertyName) == null)
+        {
+            throw new ArgumentException(
+                $"Property '{propertyName}' does not exist in the entity type '{entityType.Name}'.", 
+                nameof(propertyName));
+        }
+    }
+
+    private static void ApplyGlobalQueryFilters(ModelBuilder modelBuilder)
+    {
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(IAuditable).IsAssignableFrom(entityType.ClrType))
+            {
+                CreateQueryFilter<IAuditable>(modelBuilder);
+            }
+        }
+    }
+
+    private static void CreateQueryFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : class, IAuditable
+    {
+        modelBuilder.Entity<TEntity>().HasQueryFilter(e => e!.IsDeleted);
+    }
+    
 }
 

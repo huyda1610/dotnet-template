@@ -13,5 +13,15 @@ public class ActionInFunctionsConfiguration : IEntityTypeConfiguration<ActionInF
         builder.Property(c => c.Id).HasDefaultValueSql("NEWID()").HasColumnType("uniqueidentifier");
         builder.Property(c => c.ActionId).HasColumnType("uniqueidentifier");
         builder.Property(c => c.FunctionId).HasColumnType("uniqueidentifier");
+        
+        builder.HasOne<ActionsEntity>() 
+            .WithMany() 
+            .HasForeignKey(p => p.ActionId) 
+            .IsRequired();
+        
+        builder.HasOne<FunctionsEntity>() 
+            .WithMany() 
+            .HasForeignKey(p => p.FunctionId) 
+            .IsRequired();
     }
 }
