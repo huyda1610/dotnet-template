@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotnetTemplate.Persistence.Repositories
 {
-    public class UserRepository : RepositoryBase<UsersEntity>, IUserRepository
+    public class FunctionRepository : RepositoryBase<FunctionsEntity>, IFunctionRepository
     {
-        public UserRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
+        public FunctionRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
             : base(contextFactory)
         {
         }
